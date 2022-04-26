@@ -433,7 +433,12 @@ impl<B: MysqlShim<RW>, RW: Read + Write> MysqlIntermediary<B, RW> {
                                 w.finish()?;
                             }
                             _ => {
-                                w.completed(0, 0)?;
+                                self.shim.on_query(
+                                    ::std::str::from_utf8(q).map_err(|e| {
+                                        io::Error::new(io::ErrorKind::InvalidData, e)
+                                    })?,
+                                    w,
+                                )?;
                             }
                         }
                     } else if q.starts_with(b"USE ") || q.starts_with(b"use ") {
