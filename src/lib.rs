@@ -271,7 +271,7 @@ impl<B: MysqlShim<RW>, RW: Read + Write> MysqlIntermediary<B, RW> {
 
         self.rw.write_all(&[0x08, 0x00, 0x00, 0x00])?; // TODO: connection ID
         self.rw.write_all(&b";X,po_k}\0"[..])?; // auth seed
-        let capabilities = &mut [0x00, 0x42]; // 4.1 proto
+        let capabilities = &mut [0x0A, 0x62]; // 4.1 proto
         capabilities[1] |= 0x80; // Secure connection
         #[cfg(feature = "tls")]
         if tls_conf.is_some() {
@@ -280,7 +280,7 @@ impl<B: MysqlShim<RW>, RW: Read + Write> MysqlIntermediary<B, RW> {
         self.rw.write_all(capabilities)?;
         self.rw.write_all(&[0x21])?; // UTF8_GENERAL_CI
         self.rw.write_all(&[0x00, 0x00])?; // status flags
-        self.rw.write_all(&[0x08, 0x00])?; // extended capabilities
+        self.rw.write_all(&[0x0A, 0x00])?; // extended capabilities
         self.rw.write_all(&[0x00])?; // no plugins
         self.rw.write_all(&[0x00; 6][..])?; // filler
         self.rw.write_all(&[0x00; 4][..])?; // filler
