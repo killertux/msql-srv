@@ -43,6 +43,11 @@ impl<'a> Value<'a> {
         self.0
     }
 
+    /// Create a Value from a inner one
+    pub fn from_inner(inner: ValueInner<'a>) -> Self {
+        Self(inner)
+    }
+
     pub(crate) fn null() -> Self {
         Value(ValueInner::NULL)
     }
