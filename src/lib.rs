@@ -273,6 +273,7 @@ impl<B: MysqlShim<RW>, RW: Read + Write> MysqlIntermediary<B, RW> {
         self.rw.write_all(&b";X,po_k}\0"[..])?; // auth seed
         let capabilities = &mut [0x0A, 0x62]; // 4.1 proto
         capabilities[1] |= 0x80; // Secure connection
+        capabilities[1] |= 1 << 16; // Secure connection
         #[cfg(feature = "tls")]
         if tls_conf.is_some() {
             capabilities[1] |= 0x08; // SSL support flag
