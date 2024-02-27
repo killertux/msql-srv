@@ -274,8 +274,7 @@ where
                         io::ErrorKind::InvalidData,
                         "row has more columns than specification",
                     )
-                })?
-                .borrow();
+                })?;
             if v.is_null() {
                 if c.colflags.contains(ColumnFlags::NOT_NULL_FLAG) {
                     return Err(io::Error::new(
